@@ -1,0 +1,30 @@
+// conexão com o banco
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// gerador do client Prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+// tabela de colaboradores
+model Colaborador {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  email      String   @unique
+  senha      String
+  cargo      String
+  tickets    Ticket[]
+}
+
+// tabela de tickets
+model Ticket {
+  id            Int          @id @default(autoincrement())
+  titulo        String
+  descricao     String
+  prioridade    String
+  colaborador   Colaborador  @relation(fields: [colaboradorId], references: [id])
+  colaboradorId Int
+}
